@@ -3,6 +3,8 @@ const btn = document.getElementById("btn");
 const btnToXML = document.getElementById("btnToXML");
 const btnToXMLfunction = document.getElementById("btnToXMLfunction");
 const btnToJSONfunction = document.getElementById("btnToJSONfunction");
+const btnPokemonfunction = document.getElementById("btnPokemonfunction");
+const btnPokemonHabilitiesfunction = document.getElementById("btnPokemonNamefunction");
 
 btn.addEventListener("click", async () => {
 
@@ -100,6 +102,45 @@ btnToJSONfunction.addEventListener("click", async() => {
 
    const json = await res.json();
    
+
+   document.getElementById("output").value = JSON.stringify(json.result);
+});
+
+
+btnPokemonfunction.addEventListener("click", async() => {
+   const text = document.getElementById("input").value;
+
+   const res = await fetch ("/convertPokemon",{
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({data: text})
+  
+
+   });
+
+   const json = await res.json();
+   
+
+   document.getElementById("output").value = json.result;
+});
+// ACABAR funcio #####################################################
+btnPokemonHabilitiesfunction.addEventListener("click", async() => {
+   const text = document.getElementById("input").value;
+
+   const res = await fetch ("/convertPokemonHabilities",{
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({data: text})
+  
+   });
+
+   const json = await res.json();
 
    document.getElementById("output").value = JSON.stringify(json.result);
 });

@@ -92,3 +92,30 @@ app.post("/convertXMLtoJSON",(req,res)=>{
 app.listen(PORT, () => {
   console.log(`Servidor a http://localhost:${PORT}`);
 });
+
+
+app.post("/convertPokemon", async (req, res) => {
+  const name = req.body.data;
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+  const pokemonJson = await response.json();
+
+  const result = convert.js2xml(pokemonJson, {compact: true, spaces: 4});
+  res.json({ result });
+});
+
+app.post("/convertPokemonHabilities", async (req, res) => {
+  const name = req.body.data;
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+  
+  const pokemonJson = await response.json();
+  let abilities = []
+  for(let i=0;i < pokemonJson.abilities.length; i++){
+    abilities.push(pokemonJson.abilities[i].ability.name);
+  }
+  const extract = { 
+    name: pokemonJson.name,
+    abilities_pokemon: abilities
+  };
+  const result = extract;
+  res.json({ result });
+});
