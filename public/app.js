@@ -5,7 +5,7 @@ const btnToXMLfunction = document.getElementById("btnToXMLfunction");
 const btnToJSONfunction = document.getElementById("btnToJSONfunction");
 const btnPokemonfunction = document.getElementById("btnPokemonfunction");
 const btnPokemonHabilitiesfunction = document.getElementById("btnPokemonNamefunction");
-
+const btnPokemonImagefunction = document.getElementById("btnPokemonImagefunction");
 btn.addEventListener("click", async () => {
 
   const text = document.getElementById("input").value;
@@ -130,7 +130,7 @@ btnPokemonfunction.addEventListener("click", async() => {
 btnPokemonHabilitiesfunction.addEventListener("click", async() => {
    const text = document.getElementById("input").value;
 
-   const res = await fetch ("/convertPokemonHabilities",{
+   const res = await fetch ("/convertPokemonJSON",{
     method: "POST",
 
     headers: {
@@ -141,6 +141,37 @@ btnPokemonHabilitiesfunction.addEventListener("click", async() => {
    });
 
    const json = await res.json();
+   let abilities = []
+   for(let i=0;i < json.result.abilities.length; i++){
+    abilities.push(json.result.abilities[i].ability.name);
+  }
+  const extract = { 
+    name: json.result.name,
+    abilities_pokemon: abilities
+  };
+   document.getElementById("output").value = JSON.stringify(extract);
+});
 
-   document.getElementById("output").value = JSON.stringify(json.result);
+btnPokemonImagefunction.addEventListener("click", async() => {
+   const text = document.getElementById("input").value;
+   const res = await fetch ("/convertPokemonJSON",{
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({data: text})
+    
+   });
+   const json = await res.json();
+   const image = [json.result.sprites.front_default, json.result.sprites.back_default];
+   let result = document.createElement("div");
+   for(let i=0;i<image.length;i++){
+    let img = document.createElement('img');
+    img.src = image[i];
+    result.appendChild(img);
+    console.log(img);
+   };
+   document.getElementById("imatges").appendChild(result);
+   
 });

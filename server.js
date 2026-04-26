@@ -103,19 +103,14 @@ app.post("/convertPokemon", async (req, res) => {
   res.json({ result });
 });
 
-app.post("/convertPokemonHabilities", async (req, res) => {
+app.post("/convertPokemonJSON", async (req, res) => {
   const name = req.body.data;
-  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
   
   const pokemonJson = await response.json();
-  let abilities = []
-  for(let i=0;i < pokemonJson.abilities.length; i++){
-    abilities.push(pokemonJson.abilities[i].ability.name);
-  }
-  const extract = { 
-    name: pokemonJson.name,
-    abilities_pokemon: abilities
-  };
-  const result = extract;
+  const result = pokemonJson;
   res.json({ result });
+ 
 });
+
+
